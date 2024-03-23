@@ -1,11 +1,13 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import express from "express";
-import jwt from "jsonwebtoken"
+// import jwt from "jsonwebtoken"
 import { User } from "./entity/userEntity";
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
 app.use(express.json());
-const port = 2000;
+const port = process.env.PORT || 2000;
 
 app.post("/create", async (req, res) => {
   const userRepo = appSource.getRepository(User);
@@ -62,11 +64,11 @@ app.post('/login', async(req,res)=>{
 
 const appSource = new DataSource({
   type: "mysql",
-  host: "localhost",
-  port: 3306,
-  username: "root",
-  password: "root",
-  database: "test",
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT) ,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
   entities: ["src/entity/*{.ts,.js}"],
   synchronize: true,
   logging: true
